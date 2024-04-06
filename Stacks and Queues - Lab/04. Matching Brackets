@@ -1,0 +1,36 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _04_Matching_Brackets
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> indexiesOpenBracket = new ArrayList<>();
+        String input = scanner.nextLine();
+        for(int i = 0 ;i < input.length(); i++)
+        {
+            char ch = input.charAt(i);
+            if(ch == '(')
+            {
+                indexiesOpenBracket.add(i);
+                continue;
+            }
+            if(ch == ')')
+            {
+                int openIndex = indexiesOpenBracket.get(indexiesOpenBracket.size() - 1);
+                indexiesOpenBracket.remove(indexiesOpenBracket.size() - 1);
+                if(i + 1 < input.length())
+                {
+                    System.out.println(input.substring(openIndex, i + 1));
+                }
+                else
+                {
+                    System.out.println(input.substring(openIndex));
+                }
+
+            }
+        }
+    }
+}
