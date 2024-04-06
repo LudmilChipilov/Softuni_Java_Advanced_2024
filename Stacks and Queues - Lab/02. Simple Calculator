@@ -1,0 +1,49 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _02_Simple_Calculator
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        List<Integer> nums = new ArrayList<>();
+        nums = createInputToListInteger(input, nums);
+        calculateResultAndPrintFinalState(nums);
+    }
+    public static  List<Integer> createInputToListInteger(String input,  List<Integer> nums)
+    {
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < input.length(); i++)
+        {
+            char ch = input.charAt(i);
+            char previous = 0;
+            if(i > 0)
+            {
+                 previous = input.charAt(i - 1);
+            }
+
+            if((ch == ' ') && (previous == '+') || previous == '-')
+            {
+                continue;
+            }
+            sb.append(String.valueOf(ch)).trimToSize();
+        }
+        input = sb.toString();
+        nums = Arrays.stream(input.split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        return nums;
+    }
+    public static void calculateResultAndPrintFinalState( List<Integer> nums)
+    {
+        int sum = 0;
+        for(Integer num : nums)
+        {
+            sum += num;
+        }
+        System.out.println(sum);
+    }
+}
