@@ -1,0 +1,40 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class _05_Printer_Queue
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<String> stringsList = new ArrayList<>();
+        String command = scanner.nextLine();
+        while(!command.equals("print"))
+        {
+            if(!command.equals("cancel"))
+            {
+                stringsList.add(command);
+            }
+            else
+            {
+                if(stringsList.size() > 0)
+                {
+                    System.out.println("Canceled " + stringsList.get(0));
+                    stringsList.remove(0);
+                }
+                else
+                {
+                    System.out.println("Printer is on standby");
+                }
+            }
+            command = scanner.nextLine();
+        }
+        if(stringsList.size() > 0)
+        {
+            for(String list : stringsList)
+            {
+                System.out.println(list);
+            }
+        }
+    }
+}
