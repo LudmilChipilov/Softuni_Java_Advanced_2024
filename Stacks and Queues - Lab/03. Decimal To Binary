@@ -1,0 +1,38 @@
+import java.util.Scanner;
+
+public class _03_Decimal_To_Binary
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        long number = Long.parseLong(scanner.nextLine());
+        if(number == 0)
+        {
+            System.out.println(0);
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        while(true)
+        {
+            if(number == 0)
+            {
+                break;
+            }
+            if(number % 2 == 0)
+            {
+                sb.append("0").trimToSize();
+            }
+            if(number % 2 != 0)
+            {
+                sb.append("1").trimToSize();
+            }
+            number /= 2;
+        }
+        reverseStringAndPrint(sb);
+    }
+    public static void reverseStringAndPrint(StringBuilder sb)
+    {
+        sb.reverse();
+        System.out.println(sb.toString());
+    }
+}
