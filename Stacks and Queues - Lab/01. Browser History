@@ -1,0 +1,57 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class _01_Browser_History
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<String> history = new ArrayList<>();
+        List<String> forwardHistory = new ArrayList<>();
+        String command = scanner.nextLine();
+
+        while(!command.equals("Home"))
+        {
+            if(command.equals("back"))
+            {
+
+                if(history.size() < 2)
+                {
+                    System.out.println("no previous URLs");
+
+                }
+                else
+                {
+                    forwardHistory.add(history.get(history.size() - 1));
+                    history.remove(history.size() - 1);
+                    System.out.println(history.get(history.size() - 1));
+                }
+
+
+            }
+            else if(command.equals("forward"))
+            {
+                if(forwardHistory.size() < 1)
+                {
+                    System.out.println("no next URLs");
+                }
+                else
+                {
+                    System.out.println(forwardHistory.get(forwardHistory.size() - 1));
+                    history.add(forwardHistory.get(forwardHistory.size() - 1));
+                }
+            }
+            else
+            {
+
+                System.out.println(command);
+                history.add(command);
+                forwardHistory.clear();
+            }
+            command = scanner.nextLine();
+        }
+    }
+}
