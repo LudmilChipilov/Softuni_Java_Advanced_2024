@@ -1,0 +1,41 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _04_Basic_Queue_Operations
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+        int[] items =  Arrays
+                .stream(scanner.nextLine().split(" "))
+                .mapToInt(e -> Integer.parseInt(e)).toArray();
+        int n = items[0];
+        int s = items[1];
+        int x = items[2];
+        if(s >= n)
+        {
+            System.out.println(0);
+            return;
+        }
+        List<Integer> nums = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        for(Integer num : nums)
+        {
+            queue.push(num);
+        }
+        for(int i = 1; i <= s; i++)
+        {
+            queue.pollLast();
+        }
+        if(queue.contains(x))
+        {
+            System.out.println("true");
+            return;
+        }
+        if(!queue.contains(x))
+        {
+            System.out.println(Collections.min(queue));
+        }
+    }
+}
