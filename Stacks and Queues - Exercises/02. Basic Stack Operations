@@ -1,0 +1,44 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _02_Basic_Stack_Operations
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int[] commands = Arrays
+                .stream(scanner.nextLine().split(" "))
+                .mapToInt(e -> Integer.parseInt(e)).toArray();
+        int n = commands[0];
+        int s = commands[1];
+        int x = commands[2];
+        List<Integer> items = Arrays.stream(scanner.nextLine().split("\\s+"))
+                .map(Integer::parseInt).collect(Collectors.toList());
+        Collections.reverse(items);
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+        for(int i = 0; i < items.size(); i++)
+        {
+            queue.offer(items.get(i));
+        }
+        boolean isContain = false;
+        if(n <= s)
+        {
+            System.out.println(0);
+            return;
+        }
+
+        for(int i = 1; i <= s ; i++)
+        {
+           queue.pop();
+        }
+        if(queue.contains(x))
+        {
+            System.out.println("true");
+        }
+        if(!queue.contains(x))
+        {
+
+            System.out.println(queue.peek());
+        }
+    }
+}
