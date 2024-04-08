@@ -1,0 +1,57 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _05_Balanced_Parentheses
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        //List<Character> open = new ArrayList<>();
+        ArrayDeque<Character> open = new ArrayDeque<>();
+        String input = scanner.nextLine().replace(" ", "");
+        for(int i = 0; i < input.length(); i++)
+        {
+            //(,{, [.
+            char ch = input.charAt(i);
+            if(ch == '(' || ch == '{' || ch == '[')
+            {
+                open.push(ch);
+                continue;
+            }
+            else if(ch == ')' || ch == '}' || ch == ']')
+            {
+                if(open.size() == 0)
+                {
+                    System.out.println("NO");
+                    return;
+                }
+                char lastOpen = open.peek();
+                boolean b1 = ch == ')' && lastOpen == '(';
+                boolean b2 = ch == '}' && lastOpen == '{';
+                boolean b3 = ch == ']' && lastOpen == '[';
+                if(b1 || b2 || b3)
+                {
+                    open.pop();
+
+                    continue;
+
+                }
+               if(!b1 && !b2 && !b3)
+                {
+                    System.out.println("NO");
+                    return;
+                }
+            }
+        }
+        if(open.size() > 0)
+        {
+            System.out.println("NO");
+            return;
+        }
+        else
+        {
+            System.out.println("YES");
+            return;
+        }
+    }
+}
