@@ -1,0 +1,95 @@
+import java.util.*;
+
+public class _08_Wrong_Measurements
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int size = Integer.parseInt(scanner.nextLine());
+        int[][] matrix = new int[size][];
+        String[][] finalMatrix = new String[size][];
+
+        for(int row = 0; row < size; row++)
+        {
+            String input = scanner.nextLine();
+            String[] str = input.split(" ");
+            finalMatrix[row] = str;
+            int[] arr = Arrays
+                    .stream(input.split(" "))
+                    .mapToInt(Integer::parseInt).toArray();
+            matrix[row] = arr;
+        }
+
+
+        int[] wrongRowCol = Arrays
+                .stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt).toArray();
+        int wrongRow = wrongRowCol[0];
+        int wrongCol= wrongRowCol[1];
+        int wrongNumber = matrix[wrongRow][wrongCol];
+        finalMatrix = changeWrongNumber(matrix, finalMatrix, wrongRow, wrongCol, wrongNumber);
+        printFinalState(finalMatrix);
+    }
+    public static boolean isValidRowCol(int[][] matrix, int row, int col)
+    {
+        if(row >= 0 && col >= 0 && row < matrix.length && col < matrix[row].length)
+        {
+            return true;
+        }
+        return false;
+    }
+    public static String[][]  changeWrongNumber(int[][] matrix, String[][] finalMatrix, int wrongRow,  int wrongCol, int wrongNumber)
+    {
+        int sum = 0;
+
+
+        for(int row = 0; row < matrix.length; row++)
+        {
+            for(int col = 0; col < matrix[row].length; col++)
+            {
+                if(matrix[row][col] == wrongNumber)
+                {
+                    if(isValidRowCol(matrix, row - 1, col) && matrix[row - 1][col] != wrongNumber)
+                    {
+                        sum += matrix[row - 1][col];
+                    }
+                    if(isValidRowCol(matrix, row + 1, col) && matrix[row + 1][col] != wrongNumber)
+                    {
+                        sum += matrix[row + 1][col];
+                    }
+                    if(isValidRowCol(matrix, row, col - 1) && matrix[row][col - 1] != wrongNumber)
+                    {
+                        sum += matrix[row][col - 1];
+                    }
+                    if(isValidRowCol(matrix, row, col + 1) && matrix[row][col + 1] != wrongNumber)
+                    {
+                        sum += matrix[row][col + 1];
+                    }
+
+                    finalMatrix[row][col] = String.valueOf(sum);
+                    sum = 0;
+                }
+
+
+            }
+        }
+
+        return finalMatrix;
+    }
+
+
+
+    public static void printFinalState(String[][] matrix)
+    {
+        for(int row = 0; row < matrix.length; row++)
+        {
+            for(int col = 0; col < matrix[row].length; col++)
+            {
+                System.out.print(matrix[row][col] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
+
+
