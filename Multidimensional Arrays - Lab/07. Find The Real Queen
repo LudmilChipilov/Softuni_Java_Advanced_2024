@@ -1,0 +1,61 @@
+import java.util.Scanner;
+
+public class _07_Find_The_Real_Queen
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int size = 8;
+        boolean isReal = false;
+        String[][] matrix = new String[size][];
+        for(int row = 0; row < size; row++)
+        {
+            String[] arr = scanner.nextLine().split(" ");
+            matrix[row] = arr;
+        }
+        for(int row = 0; row < matrix.length; row++)
+        {
+            for(int col = 0; col < matrix[row].length; col++)
+            {
+                if(matrix[row][col].equals("q"))
+                {
+                     isReal = checkForRealQueen(matrix, row, col);
+                     if(isReal)
+                     {
+                         System.out.println(row + " " + col);
+                         return;
+                     }
+                     else
+                     {
+                         continue;
+                     }
+                }
+            }
+        }
+    }
+    public static boolean checkForRealQueen(String[][] matrix, int row, int col)
+    {
+        for(int i = 0; i < matrix.length; i++)
+        {
+            for(int j = 0; j < matrix[row].length; j++)
+            {
+                if(i == row && j == col)
+                {
+                    continue;
+                }
+                boolean b1 = i == row;
+                boolean b2 = j == col;
+                boolean b3 = (row - col) == (i - j);
+                boolean b4 = row + col == i + j;
+                if(b1 || b2 || b3 || b4)
+                {
+                    if(matrix[i][j].equals("q"))
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
