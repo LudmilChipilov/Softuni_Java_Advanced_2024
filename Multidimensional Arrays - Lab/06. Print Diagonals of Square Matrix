@@ -1,0 +1,40 @@
+import java.util.*;
+
+public class _06_Print_Diagonals_of_Square_Matrix
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        int size = Integer.parseInt(scanner.nextLine());
+        String[][] matrix = new String[size][];
+        for(int row = 0; row < size; row++)
+        {
+            String[] arr = scanner.nextLine().split(" ");
+            matrix[row] = arr;
+        }
+        findAndPrintDiagonals(matrix);
+    }
+    public static void findAndPrintDiagonals(String[][] matrix)
+    {
+        List<String> firstDiagonal = new ArrayList<>();
+        List<String> secondDiagonal = new ArrayList<>();
+        for(int row = 0; row < matrix.length; row++)
+        {
+            for(int col = 0; col < matrix[row].length; col++)
+            {
+                if(row == col)
+                {
+                    firstDiagonal.add(matrix[row][col]);
+                }
+                if(row + col == matrix.length - 1)
+                {
+                    secondDiagonal.add(matrix[row][col]);
+                }
+            }
+        }
+        Collections.reverse(secondDiagonal);
+        System.out.println(String.join(" ", firstDiagonal));
+        System.out.println(String.join(" ", secondDiagonal));
+    }
+}
