@@ -1,0 +1,55 @@
+import java.util.Scanner;
+
+
+public class _01_Fill_the_Matrix
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String[] items = scanner.nextLine().split(", ");
+        int size = Integer.parseInt(items[0]);
+        String pattern = items[1];
+
+        if(pattern.equals("A"))
+        {
+            fillAndPrintMatrixTypeA(size);
+        }
+        else
+        {
+            fillAndPrintMatrixTypeB(size);
+        }
+    }
+    public static void fillAndPrintMatrixTypeA(int size)
+    {
+        for(int row = 0; row < size; row++)
+        {
+            for(int col = 0; col < size; col++)
+            {
+                System.out.print((row + 1 + col*size) + " ");
+
+            }
+            System.out.println();
+        }
+
+    }
+    public static void fillAndPrintMatrixTypeB(int size)
+    {
+        for(int row = 0; row < size; row++)
+        {
+            for(int col = 0; col < size; col++)
+            {
+                if(col % 2 == 0)
+                {
+                    System.out.print((row + 1 + col*size) + " ");
+                }
+                else
+                {
+                    System.out.print(((col + 1)*size - row) + " ");
+                }
+
+            }
+            System.out.println();
+        }
+
+    }
+}
