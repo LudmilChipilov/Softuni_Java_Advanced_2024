@@ -1,0 +1,85 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class _04_Maximal_Sum
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int[] sizes = Arrays
+                .stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt).toArray();
+        int rows = sizes[0];
+        int cols = sizes[1];
+        int[][] matrix = new int[rows][];
+        for(int row = 0; row < matrix.length; row++)
+        {
+            int[] arr = Arrays
+                    .stream(scanner.nextLine().split(" "))
+                    .mapToInt(Integer::parseInt).toArray();
+            matrix[row] = arr;
+        }
+        findMaximalSumAndPrint(matrix);
+    }
+    public static void findMaximalSumAndPrint(int[][] matrix)
+    {
+        int maxSum = Integer.MIN_VALUE;
+        int[][] maxMatrix = new int[3][3];
+        String[][] finalMatrix = new String[3][3];
+        for(int row = 0; row < matrix.length; row++)
+        {
+
+            if(row >= matrix.length - 2)
+            {
+                break;
+            }
+            for(int col = 0; col < matrix[row].length; col++)
+            {
+
+                if(col >= matrix[row].length - 2)
+                {
+                    continue;
+                }
+                int sum = 0;
+                for(int i = row; i < row + 3; i++)
+                {
+                    if(i > matrix.length - 1)
+                    {
+                        continue;
+                    }
+                    for(int j = col; j < col + 3; j++)
+                    {
+                        if(j > matrix[row].length - 1)
+                        {
+                            continue;
+                        }
+                        sum += matrix[i][j];
+                        maxMatrix[i - row][j - col] = matrix[i][j];
+                    }
+                }
+                if(sum > maxSum)
+                {
+                    maxSum = sum;
+                    for(int a = 0; a < 3; a++)
+                    {
+                        for(int b = 0; b < 3; b++)
+                        {
+                            finalMatrix[a][b] = String.valueOf(maxMatrix[a][b]);
+                        }
+                    }
+                }
+
+                sum = 0;
+            }
+        }
+        System.out.printf("Sum = %d%n", maxSum);
+        for(int row = 0; row < 3; row++)
+        {
+            for(int col = 0; col < 3; col++)
+            {
+                System.out.print(finalMatrix[row][col] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
