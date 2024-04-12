@@ -1,0 +1,149 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+public class _09_Parking_System
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int[] sizes = Arrays
+                .stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt).toArray();
+        int rows = sizes[0];
+        int cols = sizes[1];
+        boolean[][] matrix = new boolean[rows][cols];
+        //List<List<String>> matrix = new ArrayList<>();
+
+
+        String command = scanner.nextLine();
+        while(!command.equals("stop"))
+        {
+            String[] comArgs = command.split(" ");
+            if(checkIfEntryAndCurrentRowAndColAreValid(comArgs, rows, cols))
+            {
+                matrix = parkingTheCar(matrix, comArgs, rows, cols);
+            }
+
+            command = scanner.nextLine();
+        }
+    }
+
+    public static boolean[][] parkingTheCar(boolean[][] matrix, String[] comArgs, int rows, int cols)
+    {
+
+        int entry = Integer.parseInt(comArgs[0]);
+        int currentRow = Integer.parseInt(comArgs[1]);
+        int currentCol = Integer.parseInt(comArgs[2]);
+        boolean isFull = checkIfCurrentRowIsFull(matrix, currentRow, cols);
+        if(isFull)
+        {
+            System.out.printf("Row %d full%n", currentRow);
+            return matrix;
+        }
+        int counter = 0;
+        int colCurr = -1;
+        if(!matrix[currentRow][currentCol])
+        {
+            int max = Math.max(currentRow, entry);
+            int min = Math.min(currentRow, entry);
+
+            counter = max - min + 1 + currentCol;
+            matrix[currentRow][currentCol] = true;
+        }
+        else
+        {
+            counter = findTheClosestColInCurrentRow(matrix, currentRow, cols, currentCol);
+            colCurr = counter - 1;
+            if(currentRow >= entry)
+            {
+                counter += currentRow - entry;
+            }
+            else
+            {
+                counter += entry - currentRow;
+            }
+
+            matrix[currentRow][colCurr] = true;
+        }
+
+        System.out.println(counter);
+        return matrix;
+    }
+    public static boolean checkIfCurrentRowIsFull(boolean[][] matrix, int currentRow, int cols)
+    {
+        boolean isFull = true;
+        boolean isValid = currentRow >= 0 && currentRow < matrix.length;
+        if(isValid)
+        {
+            for(int row = currentRow; row < currentRow + 1; row++)
+            {
+                for(int col = 1; col < cols; col++)
+                {
+                    if(!matrix[row][col])
+                    {
+                        isFull = false;
+                        return isFull;
+                    }
+
+                }
+            }
+        }
+        return isFull;
+    }
+    public static Integer findTheClosestColInCurrentRow(boolean[][] matrix, int currentRow, int cols, int currentCol)
+    {
+        int counter = 0;
+        int minDiffLeft = Integer.MAX_VALUE;
+        int minDiffRight = Integer.MAX_VALUE;
+        int countFor = 0;
+        for(int row = currentRow; row < matrix.length; row++)
+        {
+            if(countFor > 1)
+            {
+                break;
+            }
+           for(int col = 1; col < cols; col++)
+           {
+               if(!matrix[row][col])
+               {
+                  if(col < currentCol)
+                  {
+                      if(currentCol - col < minDiffLeft)
+                      {
+                          minDiffLeft = currentCol - col;
+                      }
+                  }
+                  else if(col > currentCol)
+                  {
+                      if(col - currentCol < minDiffRight)
+                      {
+                          minDiffRight = col - currentCol;
+                      }
+                  }
+               }
+               countFor++;
+           }
+           if(minDiffRight < minDiffLeft)
+           {
+               counter = currentCol + minDiffRight + 1;
+           }
+           else
+           {
+               counter = currentCol - minDiffLeft + 1;
+           }
+
+        }
+        return counter;
+    }
+    public static boolean checkIfEntryAndCurrentRowAndColAreValid(String[] comArgs, int rows, int cols)
+    {
+        int entry = Integer.parseInt(comArgs[0]);
+        int currentRow = Integer.parseInt(comArgs[1]);
+        int currentCol = Integer.parseInt(comArgs[2]);
+        boolean isValid = entry >= 0 && entry < rows && currentRow >= 0 && currentRow < rows
+                && currentCol > 0 && currentCol < cols;
+        return isValid;
+    }
+}
