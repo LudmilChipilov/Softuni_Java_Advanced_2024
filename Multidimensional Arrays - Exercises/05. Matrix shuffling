@@ -1,0 +1,92 @@
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Scanner;
+
+public class _05_Matrix_shuffling
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int[] sizes = Arrays
+                .stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt).toArray();
+        int rows = sizes[0];
+        int cols = sizes[1];
+        String[][] matrix = new String[rows][];
+
+        for(int row = 0; row < matrix.length; row++)
+        {
+            String[] arr = scanner.nextLine().split(" ");
+            matrix[row] = arr;
+        }
+        String command = scanner.nextLine();
+        while(!command.equals("END"))
+        {
+            String[] comArgs = command.split(" ");
+            boolean isValid = checkIfCommandIsValid(comArgs, matrix, cols);
+            if(isValid)
+            {
+               matrix = swapValidIndexies(matrix, comArgs);
+                printCurrentMatrix(matrix);
+            }
+            else
+            {
+                System.out.println("Invalid input!");
+            }
+            command = scanner.nextLine();
+        }
+    }
+    public static boolean checkIfCommandIsValid(String[] comArgs,  String[][] matrix, int cols)
+    {
+         boolean isValid = Objects.equals(comArgs[0], "swap") && comArgs.length == 5;
+         if(isValid)
+         {
+             for(int i = 1; i < comArgs.length; i++)
+             {
+                 int index = Integer.parseInt(comArgs[i]);
+                 if(i % 2 != 0)
+                 {
+                     if(index < 0 || index >= matrix.length)
+                     {
+                         return false;
+                     }
+                 }
+                 else
+                 {
+                     if(index < 0 || index >= cols)
+                     {
+                         return false;
+                     }
+                 }
+             }
+         }
+         else
+         {
+             return false;
+         }
+         return true;
+    }
+    public static String[][] swapValidIndexies(String[][] matrix,  String[] comArgs)
+    {
+        int row1 = Integer.parseInt(comArgs[1]);
+        int col1 = Integer.parseInt(comArgs[2]);
+        int row2 = Integer.parseInt(comArgs[3]);
+        int col2 = Integer.parseInt(comArgs[4]);
+        String one = matrix[row1][col1];
+        String two = matrix[row2][col2];
+        matrix[row1][col1] = two;
+        matrix[row2][col2] = one;
+        return matrix;
+    }
+    public static void printCurrentMatrix(String[][] matrix)
+    {
+        for(int row = 0; row < matrix.length; row++)
+        {
+            for(int col = 0; col < matrix[row].length; col++)
+            {
+                System.out.print(matrix[row][col] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
