@@ -1,0 +1,32 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class _02_Matrix_of_Palindromes
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int[] nums = Arrays
+                .stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt).toArray();
+        int r = nums[0];
+        int c = nums[1];
+        findPalindromesAndPrint(r, c);
+    }
+    public static void findPalindromesAndPrint(int r, int c)
+    {
+        for(int row = 0; row < r; row++)
+        {
+            for(int col = 0; col < c; col++)
+            {
+                if(col == 0)
+                {
+                    System.out.printf("%c%c%c ", row + 97, row + 97, row + 97);
+                    continue;
+                }
+                System.out.printf("%c%c%c ", row + 97, col + row + 97, row + 97);
+            }
+            System.out.println();
+        }
+    }
+}
