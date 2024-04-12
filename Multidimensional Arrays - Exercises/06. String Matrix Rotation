@@ -1,0 +1,137 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+
+public class _06_String_Matrix_Rotation
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<String> items = new ArrayList<>();
+        String rotate = scanner.nextLine();
+        int degrees = findDegrees(rotate);
+        String command = scanner.nextLine();
+        int maxLength = 0;
+        while(!command.equals("END"))
+        {
+            if(command.length() > maxLength)
+            {
+                maxLength = command.length();
+            }
+            items.add(command);
+            command = scanner.nextLine();
+        }
+        if(degrees == 0 || degrees % 360 == 0)
+        {
+            findMatrix360Degrees(items, maxLength);
+        }
+        else if(degrees == 90 || (degrees - 90) % 360 == 0)
+        {
+            findMatrix90Degrees(items, maxLength);
+        }
+        else if(degrees == 180 || (degrees - 180) % 360 == 0)
+        {
+            findMatrix180Degrees(items, maxLength);
+        }
+        else if(degrees == 270 || (degrees - 270) % 360 == 0)
+        {
+            findMatrix270Degrees(items, maxLength);
+        }
+
+    }
+    public static Integer findDegrees(String rotate)
+    {
+        int index = rotate.indexOf('(');
+        String n = rotate.substring(index + 1, rotate.length() - 1);
+        int degrees = Integer.parseInt(n);
+        return degrees;
+    }
+    public static void findMatrix360Degrees(List<String> items, int maxLength)
+    {
+        String[][] matrix = new String[items.size()][maxLength];
+        for(int row = 0; row < matrix.length; row++)
+        {
+            for(int col = 0; col < matrix[row].length; col++)
+            {
+
+                if(items.get(row).length() <= col)
+                {
+                    System.out.print(" ");
+                }
+                else
+                {
+                    char ch = items.get(row).charAt(col);
+                    System.out.print(ch);
+                }
+            }
+            System.out.println();
+        }
+    }
+    public static void findMatrix90Degrees(List<String> items, int maxLength)
+    {
+        String[][] matrix = new String[maxLength][items.size()];
+        Collections.reverse(items);
+        for(int row = 0; row < matrix.length; row++)
+        {
+            for(int col = 0; col < matrix[row].length; col++)
+            {
+
+                if(items.get(col).length() <= row)
+                {
+                    System.out.print(" ");
+                }
+                else
+                {
+                    char ch = items.get(col).charAt(row);
+                    System.out.print(ch);
+                }
+            }
+            System.out.println();
+        }
+    }
+    public static void findMatrix180Degrees(List<String> items, int maxLength)
+    {
+        Collections.reverse(items);
+        String[][] matrix = new String[items.size()][maxLength];
+        for(int row = 0; row < matrix.length; row++)
+        {
+            for(int col = matrix[row].length - 1; col >= 0; col--)
+            {
+
+                if(items.get(row).length() <= col)
+                {
+                    System.out.print(" ");
+                }
+                else
+                {
+                    char ch = items.get(row).charAt(col);
+                    System.out.print(ch);
+                }
+            }
+            System.out.println();
+        }
+    }
+    public static void findMatrix270Degrees(List<String> items, int maxLength)
+    {
+        String[][] matrix = new String[maxLength][items.size()];
+
+        for(int row = matrix.length - 1; row >= 0; row--)
+        {
+            for(int col = 0; col < matrix[row].length; col++)
+            {
+
+                if(items.get(col).length() <= row)
+                {
+                    System.out.print(" ");
+                }
+                else
+                {
+                    char ch = items.get(col).charAt(row);
+                    System.out.print(ch);
+                }
+            }
+            System.out.println();
+        }
+    }
+}
