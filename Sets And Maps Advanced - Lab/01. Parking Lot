@@ -1,0 +1,55 @@
+import java.util.LinkedHashSet;
+import java.util.Scanner;
+
+public class _01_Parking_Lot
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        LinkedHashSet<String> parkingLot = new LinkedHashSet<>();
+        String command = scanner.nextLine();
+        while(!command.equals("END"))
+        {
+            String[] comArgs = command.split(", ");
+            String direction = comArgs[0];
+            String carNumber = comArgs[1];
+            if(direction.equals("IN"))
+            {
+                parkingLot = addInexistingCarNumber(parkingLot, carNumber);
+            }
+            else if(direction.equals("OUT"))
+            {
+                parkingLot = removeExistingCarNumber(parkingLot, carNumber);
+            }
+            command = scanner.nextLine();
+        }
+       printFinalState(parkingLot);
+    }
+    public static LinkedHashSet<String> addInexistingCarNumber(LinkedHashSet<String> parkingLot, String carNumber)
+    {
+
+        parkingLot.add(carNumber);
+        return parkingLot;
+    }
+    public static LinkedHashSet<String> removeExistingCarNumber(LinkedHashSet<String> parkingLot, String carNumber)
+    {
+
+        parkingLot.remove(carNumber);
+        return parkingLot;
+    }
+    public static void printFinalState(LinkedHashSet<String> parkingLot)
+    {
+        if(parkingLot.size() == 0)
+        {
+            System.out.println("Parking Lot is Empty");
+        }
+        else
+        {
+            for(String number : parkingLot)
+            {
+                System.out.println(number);
+            }
+        }
+       
+    }
+}
