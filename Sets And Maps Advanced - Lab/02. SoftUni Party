@@ -1,0 +1,49 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _02_SoftUni_Party
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        TreeSet<String> vip = new TreeSet<>();
+        TreeSet<String> regular = new TreeSet<>();
+        String command1 = scanner.nextLine();
+        while(!command1.equals("PARTY"))
+        {
+            char firstLetter = command1.charAt(0);
+            if(Character.isDigit(firstLetter))
+            {
+                vip.add(command1);
+            }
+            else
+            {
+                regular.add(command1);
+            }
+            command1 = scanner.nextLine();
+        }
+        String command2 = scanner.nextLine();
+        while(!command2.equals("END"))
+        {
+            vip.remove(command2);
+            regular.remove(command2);
+            command2 = scanner.nextLine();
+        }
+        printFinalState(vip, regular);
+    }
+    public static void printFinalState(TreeSet<String> vip,  TreeSet<String> regular)
+    {
+
+
+        int count = vip.size() + regular.size();
+        System.out.println(count);
+        for(String v : vip)
+        {
+            System.out.println(v);
+        }
+        for(String r : regular)
+        {
+            System.out.println(r);
+        }
+    }
+}
