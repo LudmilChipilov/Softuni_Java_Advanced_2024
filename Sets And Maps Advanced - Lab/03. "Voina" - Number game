@@ -1,0 +1,55 @@
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
+public class _03_Voina_Number_game
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        LinkedHashSet<Integer> firstList = Arrays.stream(scanner.nextLine().split("\\s+"))
+                .map(Integer::parseInt)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        LinkedHashSet<Integer> secondList = Arrays.stream(scanner.nextLine().split("\\s+"))
+                .map(Integer::parseInt)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        for(int i = 0; i < 50; i++)
+        {
+            int firstNumber = firstList.iterator().next();
+            firstList.remove(firstNumber);
+            int secondNumber = secondList.iterator().next();
+            secondList.remove(secondNumber);
+            if(firstNumber > secondNumber)
+            {
+                firstList.add(firstNumber);
+                firstList.add(secondNumber);
+            }
+            else if(secondNumber > firstNumber)
+            {
+                secondList.add(firstNumber);
+                secondList.add(secondNumber);
+            }
+            if(firstList.isEmpty() || secondList.isEmpty())
+            {
+                break;
+            }
+        }
+        printFinalState(firstList, secondList);
+    }
+    public static void printFinalState(LinkedHashSet<Integer> firstList,  LinkedHashSet<Integer> secondList)
+    {
+        if(firstList.size() < secondList.size())
+        {
+            System.out.println("Second player win!");
+        }
+        else if(secondList.size() < firstList.size())
+        {
+            System.out.println("First player win!");
+        }
+        else
+        {
+            System.out.println("Draw!");
+        }
+    }
+}
