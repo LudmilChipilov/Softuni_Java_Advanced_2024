@@ -1,0 +1,100 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _05_Average_Students_Grades
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        LinkedHashSet<StudentsGrades> studentsGrades = new LinkedHashSet<>();
+        int n = Integer.parseInt(scanner.nextLine());
+        for(int i = 0; i < n; i++)
+        {
+            String[] items = scanner.nextLine().split("\\s+");
+            studentsGrades = addOrUpdateStudent(studentsGrades, items);
+        }
+        printFinalState(studentsGrades);
+    }
+    public static  LinkedHashSet<StudentsGrades> addOrUpdateStudent(LinkedHashSet<StudentsGrades> studentsGrades, String[] items)
+    {
+        String name = items[0];
+        double grade = Double.parseDouble(items[1]);
+        boolean isExist = false;
+
+        if(!studentsGrades.isEmpty())
+        {
+            for(StudentsGrades student : studentsGrades)
+            {
+                if(student.getName().equals(name))
+                {
+                    isExist = true;
+                    student.getGrades().add(grade);
+                    return studentsGrades;
+                }
+            }
+        }
+
+        if(!isExist || studentsGrades.isEmpty())
+        {
+            List<Double> grades = new ArrayList<>();
+            grades.add(grade);
+            StudentsGrades student = new StudentsGrades(name, grades);
+            studentsGrades.add(student);
+            return studentsGrades;
+        }
+        return studentsGrades;
+
+    }
+    public static void printFinalState(LinkedHashSet<StudentsGrades> studentsGrades)
+    {
+        List<StudentsGrades> temp = new ArrayList<>();
+        temp = studentsGrades.stream().collect(Collectors.toList());
+        temp.sort(Comparator.comparing(StudentsGrades::getName));
+        for(StudentsGrades student : temp)
+        {
+            double average = 0;
+            List<String> stringGrades = new ArrayList<>();
+            List<Double> grades = student.getGrades();
+            for(Double grade : grades)
+            {
+                average += grade;
+                stringGrades.add(String.valueOf(String.format("%.2f", grade)));
+            }
+            average /= grades.size()*1.0;
+
+
+            System.out.printf("%s -> ", student.getName());
+            System.out.print(String.join(" ", stringGrades));
+            System.out.printf(" (avg: %.2f)", average);
+            System.out.println();
+        }
+    }
+
+}
+class StudentsGrades
+{
+    private String name;
+    private List<Double> grades;
+
+    StudentsGrades(String name, List<Double> grades)
+    {
+        this.name = name;
+        this.grades = grades;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Double> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<Double> grades) {
+        this.grades = grades;
+    }
+}
