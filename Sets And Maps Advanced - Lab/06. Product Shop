@@ -1,0 +1,41 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _06_Product_Shop {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        TreeMap<String, LinkedHashMap<String, Double>> shopsList = new TreeMap<>();
+
+        String command = scanner.nextLine();
+        while (!command.equals("Revision")) {
+            String[] comArgs = command.split(", ");
+            shopsList = addOrUpdateShopList(shopsList, comArgs);
+            command = scanner.nextLine();
+        }
+       printFinalState(shopsList);
+    }
+    public static TreeMap<String, LinkedHashMap<String, Double>> addOrUpdateShopList( TreeMap<String, LinkedHashMap<String, Double>> shopsList,
+                                                                                      String[] comArgs)
+    {
+        String shopName = comArgs[0];
+        String productName = comArgs[1];
+        double price = Double.parseDouble(comArgs[2]);
+        shopsList.putIfAbsent(shopName, new LinkedHashMap<>());
+        LinkedHashMap<String, Double> productPrice = shopsList.get(shopName);
+        productPrice.putIfAbsent(productName, price);
+        return shopsList;
+    }
+    public static void printFinalState(TreeMap<String, LinkedHashMap<String, Double>> shopsList)
+    {
+        for (Map.Entry<String, LinkedHashMap<String, Double>> entry : shopsList.entrySet()) {
+            System.out.println(entry.getKey() + "->");
+
+            LinkedHashMap<String, Double> productPrice = entry.getValue();
+
+            for (var item : productPrice.entrySet()) {
+                System.out.printf("Product: %s, Price: %.1f%n", item.getKey(), item.getValue());
+            }
+        }
+    }
+}
+
