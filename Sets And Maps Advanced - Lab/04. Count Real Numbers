@@ -1,0 +1,40 @@
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class _04_Count_Real_Numbers
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        double[] values = Arrays.stream(scanner.nextLine().split("\\s+"))
+                .mapToDouble(Double::parseDouble).toArray();
+        Map<Double, Integer> grades = new LinkedHashMap<>();
+        grades = addOrUpdateGradeAndCount(values);
+        printFinalState(grades);
+    }
+    public static Map<Double, Integer> addOrUpdateGradeAndCount(double[] values)
+    {
+        Map<Double, Integer> grades = new LinkedHashMap<>();
+        for(Double v : values)
+        {
+            if(!grades.containsKey(v))
+            {
+                grades.put(v, 1);
+            }
+            else
+            {
+                grades.put(v, grades.get(v) + 1);
+            }
+        }
+        return grades;
+    }
+    public static void printFinalState(Map<Double, Integer> grades)
+    {
+        for(Double key : grades.keySet())
+        {
+            System.out.println(String.format("%.1f -> %d", key, grades.get(key)));
+        }
+    }
+}
