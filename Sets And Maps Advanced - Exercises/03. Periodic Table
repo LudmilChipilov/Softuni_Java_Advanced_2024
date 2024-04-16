@@ -1,0 +1,31 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+public class _03_Periodic_Table
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        TreeSet<String> elements = new TreeSet<>();
+        int n = Integer.parseInt(scanner.nextLine());
+        for(int i = 0; i < n; i++)
+        {
+            List<String> items = Arrays.stream(scanner.nextLine().split(" "))
+                    .collect(Collectors.toList());
+            elements = addUniqueElements(elements, items);
+        }
+      printFinalState(elements);
+    }
+    public static  TreeSet<String> addUniqueElements(TreeSet<String> elements,  List<String> items)
+    {
+        elements.addAll(items);
+        return elements;
+    }
+    public static void printFinalState(TreeSet<String> elements)
+    {
+        System.out.println(String.join(" ", elements));
+    }
+}
