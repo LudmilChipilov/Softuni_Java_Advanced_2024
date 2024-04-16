@@ -1,0 +1,50 @@
+import java.util.LinkedHashMap;
+import java.util.Scanner;
+
+public class _05_Phonebook
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        LinkedHashMap<String, String> namesNumberList = new LinkedHashMap<>();
+        String command1 = scanner.nextLine();
+        while(!command1.equals("search"))
+        {
+            String[] items = command1.split("-");
+            namesNumberList = addOrUpdateNameAndNumber(namesNumberList, items);
+            command1 = scanner.nextLine();
+        }
+        String command2 = scanner.nextLine();
+        while(!command2.equals("stop"))
+        {
+            String name = command2;
+            printExistingNameAndNumber(namesNumberList, name);
+            command2 = scanner.nextLine();
+        }
+    }
+    public static LinkedHashMap<String, String> addOrUpdateNameAndNumber(LinkedHashMap<String, String> namesNumberList,  String[] items)
+    {
+        String name = items[0];
+        String number = items[1];
+        namesNumberList.put(name, number);
+        return namesNumberList;
+    }
+    public static void printExistingNameAndNumber(LinkedHashMap<String, String> namesNumberList,  String name)
+    {
+        if(namesNumberList.containsKey(name))
+        {
+            for(String key : namesNumberList.keySet())
+            {
+                if(key.equals(name))
+                {
+                    System.out.println(key + " -> " + namesNumberList.get(key));
+                }
+
+            }
+        }
+        else
+        {
+            System.out.printf("Contact %s does not exist.%n", name);
+        }
+    }
+}
