@@ -1,0 +1,215 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _12_Serbian_Unleashed
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, List<SerbianSinger>> venuesSingers = new LinkedHashMap<>();
+        String command = scanner.nextLine();
+        while(!command.equals("End"))
+        {
+            String[] items = command.split(" ");
+            if(items.length < 4)
+            {
+                command = scanner.nextLine();
+                continue;
+            }
+            boolean isValid = false;
+            isValid = checkIfInputIsCorrect(items);
+            if(isValid == false)
+            {
+                command = scanner.nextLine();
+                continue;
+            }
+            String singerName = checkInputForRightSingerName(items);
+            String venue = checkInputForRightVenue(items);
+            int ticketsPrice = checkInputForRightTicketsPrice(items);
+            int ticketsCount = checkInputForRightTicketsCount(items);
+            if(!command.endsWith(String.valueOf(ticketsPrice + " " + ticketsCount)))
+            {
+                command = scanner.nextLine();
+                continue;
+            }
+            venuesSingers = addOrUpdateVenuesSingers(venuesSingers, singerName, venue, ticketsPrice, ticketsCount);
+            command = scanner.nextLine();
+        }
+        printFinalState(venuesSingers);
+    }
+    public static boolean checkIfInputIsCorrect(String[] items)
+    {
+        int counterKlomba = 0;
+        int numInteegers = 0;
+        for(int i = 0; i < items.length; i++)
+        {
+            char ch = items[i].charAt(0);
+            if(items[i].startsWith("@"))
+            {
+                counterKlomba++;
+            }
+            if(Character.isDigit(ch))
+            {
+                numInteegers++;
+            }
+        }
+        if(counterKlomba == 1 && numInteegers == 2)
+        {
+            return true;
+        }
+        return false;
+    }
+    public static String checkInputForRightSingerName(String[] items)
+    {
+        String singerName = "";
+        for(int i = 0; i < items.length; i++)
+        {
+            if(items[i].startsWith("@"))
+            {
+                break;
+            }
+            singerName += items[i] + " ";
+        }
+        singerName = singerName.substring(0, singerName.length() - 1);
+        return singerName;
+    }
+    public static String checkInputForRightVenue(String[] items)
+    {
+        String venue = "";
+        int counter = 0;
+        for(int i = 0; i < items.length; i++)
+        {
+            char ch = items[i].charAt(0);
+            if(Character.isDigit(ch))
+            {
+                break;
+            }
+            if(items[i].startsWith("@"))
+            {
+                counter++;
+                venue += items[i] + " ";
+                continue;
+            }
+            if(counter > 0)
+            {
+                venue += items[i] + " ";
+            }
+
+        }
+        venue = venue.substring(0, venue.length() - 1);
+        return venue;
+    }
+    public static Integer checkInputForRightTicketsPrice(String[] items)
+    {
+        Integer ticketsPrice = 0;
+        for(int i = 0; i < items.length; i++)
+        {
+            char ch = items[i].charAt(0);
+            if(Character.isDigit(ch))
+            {
+                ticketsPrice = Integer.parseInt(items[i]);
+                break;
+            }
+        }
+        return ticketsPrice;
+    }
+    public static Integer checkInputForRightTicketsCount(String[] items)
+    {
+        int ticketsCount = 0;
+        int counter = 0;
+        for(int i = 0; i < items.length; i++)
+        {
+            char ch = items[i].charAt(0);
+            if(Character.isDigit(ch))
+            {
+                counter++;
+                if(counter == 1)
+                {
+                    continue;
+                }
+                ticketsCount = Integer.parseInt(items[i]);
+                break;
+            }
+        }
+        return ticketsCount;
+    }
+    public static Map<String, List<SerbianSinger>> addOrUpdateVenuesSingers( Map<String, List<SerbianSinger>> venuesSingers,
+                                                                             String singerName, String venue,
+                                                                             int ticketsPrice, int ticketsCount)
+    {
+        if(!venuesSingers.containsKey(venue))
+        {
+            venuesSingers.put(venue, new ArrayList<>());
+            List<SerbianSinger> singers = venuesSingers.get(venue);
+            int totalPrice = ticketsPrice * ticketsCount;
+            SerbianSinger serbianSinger = new SerbianSinger(singerName, totalPrice);
+            singers.add(serbianSinger);
+        }
+        else
+        {
+            List<SerbianSinger> singers = venuesSingers.get(venue);
+            boolean isExist = false;
+            for(int i = 0; i < singers.size(); i++)
+            {
+                if(singers.get(i).getSingerName().equals(singerName))
+                {
+                    isExist = true;
+                    singers.get(i).setTotalPrice(singers.get(i).getTotalPrice() + ticketsPrice*ticketsCount);
+                    break;
+                }
+            }
+            if(!isExist)
+            {
+
+                int totalPrice = ticketsPrice * ticketsCount;
+                SerbianSinger serbianSinger = new SerbianSinger(singerName, totalPrice);
+                singers.add(serbianSinger);
+            }
+        }
+        return venuesSingers;
+    }
+    public static void printFinalState(Map<String, List<SerbianSinger>> venuesSingers)
+    {
+        for(String key : venuesSingers.keySet())
+        {
+            String temp = key.substring(1);
+            System.out.println(temp);
+            List<SerbianSinger> ordered = venuesSingers.get(key);
+            ordered.sort(Comparator.comparing(SerbianSinger::getTotalPrice).reversed());
+            for(SerbianSinger singer : ordered)
+            {
+                System.out.printf("#  %s -> %d%n", singer.getSingerName(), singer.getTotalPrice());
+            }
+        }
+    }
+}
+class SerbianSinger
+{
+    private String singerName;
+
+
+    private int totalPrice;
+
+    SerbianSinger(String singerName,  int totalPrice) {
+        this.singerName = singerName;
+        this.totalPrice = totalPrice;
+    }
+
+    public String getSingerName() {
+        return singerName;
+    }
+
+    public void setSingerName(String singerName) {
+        this.singerName = singerName;
+    }
+
+
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+}
