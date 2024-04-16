@@ -1,0 +1,85 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _09_Population_Counter
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        LinkedHashMap<String, Long> countryTotalPopulation = new LinkedHashMap<>();
+        LinkedHashMap<String, LinkedHashMap<String, Long>> countryCities = new LinkedHashMap<>();
+        String command = scanner.nextLine();
+        while(!command.equals("report"))
+        {
+            String[] items = command.split("\\|");
+            countryTotalPopulation = addInexistingCountryOrUpdatePopulation(countryTotalPopulation, items);
+            countryCities = addCountryAndTownOrUpdate(countryCities, items);
+            command = scanner.nextLine();
+        }
+        printFinalState(countryTotalPopulation, countryCities);
+    }
+    public static  LinkedHashMap<String, Long> addInexistingCountryOrUpdatePopulation(LinkedHashMap<String, Long> countryTotalPopulation,
+                                                                                         String[] items)
+    {
+        String country = items[1];
+        long population = Integer.parseInt(items[2]);
+        if(!countryTotalPopulation.containsKey(country))
+        {
+            countryTotalPopulation.put(country, population);
+        }
+        else
+        {
+            countryTotalPopulation.put(country, countryTotalPopulation.get(country) + population);
+        }
+        return countryTotalPopulation;
+    }
+    public static LinkedHashMap<String, LinkedHashMap<String, Long>> addCountryAndTownOrUpdate(LinkedHashMap<String, LinkedHashMap<String, Long>> countryCities,
+                                                                                                   String[] items)
+    {
+        String city = items[0];
+        String country = items[1];
+        long population = Integer.parseInt(items[2]);
+        if(!countryCities.containsKey(country))
+        {
+            countryCities.put(country, new LinkedHashMap<>());
+            LinkedHashMap<String, Long> cityPopulation = new LinkedHashMap<>();
+            cityPopulation = countryCities.get(country);
+            cityPopulation.put(city, population);
+        }
+        else
+        {
+            LinkedHashMap<String, Long> cityPopulation = new LinkedHashMap<>();
+            cityPopulation = countryCities.get(country);
+            cityPopulation.put(city, population);
+        }
+        return countryCities;
+    }
+    public static void printFinalState(LinkedHashMap<String, Long> countryTotalPopulation,
+                                        LinkedHashMap<String, LinkedHashMap<String, Long>> countryCities)
+    {
+        LinkedHashMap<String, Long> orderedCountryPopulation = countryTotalPopulation.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(LinkedHashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), Map::putAll);
+        for(String key : orderedCountryPopulation.keySet())
+        {
+            System.out.println(key + " (total population: " + orderedCountryPopulation.get(key) + ")");
+            for(String key1 : countryCities.keySet())
+            {
+                LinkedHashMap<String, Long> orderedCitiesPopulation = countryCities.get(key1).entrySet()
+                        .stream()
+                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .collect(LinkedHashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), Map::putAll);
+
+                if(key1.equals(key))
+                {
+                    for(String key2 : orderedCitiesPopulation.keySet())
+                    {
+                        System.out.println("=>" + key2 + ": " + orderedCitiesPopulation.get(key2));
+                    }
+                }
+            }
+        }
+
+    }
+}
