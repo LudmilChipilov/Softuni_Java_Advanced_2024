@@ -1,0 +1,41 @@
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Scanner;
+
+public class _02_Sets_of_Elements
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int[] nums = Arrays
+                .stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt).toArray();
+        int numOne = nums[0];
+        int numTwo = nums[1];
+        LinkedHashSet<Integer> first = new LinkedHashSet<>();
+        LinkedHashSet<Integer> second = new LinkedHashSet<>();
+        for(int i = 0; i < numOne + numTwo; i++)
+        {
+            int number = Integer.parseInt(scanner.nextLine());
+            if(i < numOne)
+            {
+                first.add(number);
+            }
+            else
+            {
+                second.add(number);
+            }
+        }
+        printFinalState(first, second);
+    }
+    public static void printFinalState(LinkedHashSet<Integer> first,  LinkedHashSet<Integer> second)
+    {
+        for(Integer num : first)
+        {
+            if(second.contains(num))
+            {
+                System.out.print(num + " ");
+            }
+        }
+    }
+}
