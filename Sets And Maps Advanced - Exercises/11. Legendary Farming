@@ -1,0 +1,124 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _11_Legendary_Farming
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int winPoints = 250;
+        Map<String, Integer> farmingPoints = new TreeMap<>();
+        farmingPoints = initializeFarmingList(farmingPoints);
+        Map<String, Integer> junksPoints = new TreeMap<>();
+        String win = "";
+        while(win.equals(""))
+        {
+            String[] items = scanner.nextLine().split(" ");
+            for(int i = 0;i < items.length ; i += 2)
+            {
+
+                int points = Integer.parseInt(items[i]);
+                String material = items[i + 1].toLowerCase();
+                //fragments shards motes
+                if(material.equals("fragments") || material.equals("shards") || material.equals("motes"))
+                {
+                    farmingPoints = updateFarmingList(farmingPoints, points, material);
+                    int currentPoints = checkIfPointsIsOver250(farmingPoints, material);
+                    if(currentPoints >= winPoints)
+                    {
+                        win = material;
+                        break;
+                    }
+                }
+                else
+                {
+                    junksPoints = updateJunksList(junksPoints, points, material);
+                }
+            }
+        }
+
+        String winner = checkWinLegendaryFarm(win);
+        printFinalState(farmingPoints, junksPoints, winner, win);
+    }
+    public static  Map<String, Integer> initializeFarmingList(Map<String, Integer> farmingPoints)
+    {
+        //fragments:  shards:  motes:
+        farmingPoints.put("fragments", 0);
+        farmingPoints.put("shards", 0);
+        farmingPoints.put("motes", 0);
+        return farmingPoints;
+    }
+
+    public static  Map<String, Integer> updateFarmingList(Map<String, Integer> farmingPoints, int points,  String material)
+    {
+        farmingPoints.put(material, farmingPoints.get(material) + points);
+        return farmingPoints;
+    }
+    public static  Map<String, Integer> updateJunksList(Map<String, Integer> junksPoints, int points,  String material)
+    {
+        if(!junksPoints.containsKey(material))
+        {
+            junksPoints.put(material, points);
+            return junksPoints;
+        }
+        junksPoints.put(material, junksPoints.get(material) + points);
+        return junksPoints;
+    }
+    public static Integer checkIfPointsIsOver250(Map<String, Integer> farmingPoints, String material)
+    {
+        int currentPoints = 0;
+        if(farmingPoints.get(material) >= 250)
+        {
+            currentPoints = farmingPoints.get(material);
+        }
+        return currentPoints;
+    }
+    public static String checkWinLegendaryFarm(String win)
+    {
+        String winner = "";
+          if(win.equals("shards"))
+          {
+              winner = "Shadowmourne";
+          }
+          else if(win.equals("fragments"))
+          {
+              winner = "Valanyr";
+          }
+          else if(win.equals("motes"))
+          {
+              winner = "Dragonwrath";
+          }
+          return winner;
+    }
+    public static void printFinalState(Map<String, Integer> farmingPoints,  Map<String, Integer> junksPoints, String winner, String win)
+    {
+        farmingPoints.put(win, farmingPoints.get(win) - 250);
+        Map<String, Integer> orderedFarms = farmingPoints.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(LinkedHashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), Map::putAll);
+
+
+        System.out.println(winner + " obtained!");
+        int counter = 1;
+        for(String key : orderedFarms.keySet())
+        {
+            if(counter == 1)
+            {
+
+                System.out.println(key + ": " + orderedFarms.get(key));;
+            }
+            else
+            {
+                System.out.println(key + ": " + orderedFarms.get(key));
+            }
+            counter++;
+        }
+        for(String key : junksPoints.keySet())
+        {
+            System.out.println(key + ": " + junksPoints.get(key));
+        }
+    }
+}
+
+
