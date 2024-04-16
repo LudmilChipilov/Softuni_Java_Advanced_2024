@@ -1,0 +1,38 @@
+import java.util.LinkedHashMap;
+import java.util.Scanner;
+
+public class _06_Fix_Emails
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        LinkedHashMap<String, String> namesEmailList = new LinkedHashMap<>();
+        String command = scanner.nextLine();
+        while(!command.equals("stop"))
+        {
+            String name = command;
+            String email = scanner.nextLine();
+            if(!checkIfEmailIsValid(email))
+            {
+                namesEmailList.put(name, email);
+            }
+            command = scanner.nextLine();
+        }
+        printFinalState(namesEmailList);
+    }
+    public static boolean checkIfEmailIsValid(String email)
+    {
+        if(email.endsWith("us") || email.endsWith("uk") || email.endsWith("com"))
+        {
+            return true;
+        }
+        return false;
+    }
+    public static void printFinalState(LinkedHashMap<String, String> namesEmailList)
+    {
+        for(String key : namesEmailList.keySet())
+        {
+            System.out.println(key + " -> " + namesEmailList.get(key));
+        }
+    }
+}
