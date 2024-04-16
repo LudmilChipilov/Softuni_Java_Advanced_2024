@@ -1,0 +1,133 @@
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Scanner;
+
+public class _07_Hands_Of_Cards
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        LinkedHashMap<String, Integer> playersTotalPowerList = new LinkedHashMap<>();
+        LinkedHashMap<String, LinkedHashSet<String>> playersList = new LinkedHashMap<>();
+        String command = scanner.nextLine();
+        while(!command.equals("JOKER"))
+        {
+            String items = command;
+            playersList = addOrUpdatePlayerListCards(playersList, items);
+            command = scanner.nextLine();
+        }
+        playersTotalPowerList = addPlayerAndCalculateTotalPower(playersList);
+        printFinalState(playersTotalPowerList);
+    }
+    public static  LinkedHashMap<String, LinkedHashSet<String>> addOrUpdatePlayerListCards(LinkedHashMap<String, LinkedHashSet<String>> playersList, String items)
+    {
+        int index = items.indexOf(':');
+        String name = items.substring(0, index);
+        String temp = items.substring(index + 2);
+        String[] cards = temp.split(", ");
+        LinkedHashSet<String> uniqueCards = new LinkedHashSet<>();
+        for(String card : cards)
+        {
+            uniqueCards.add(card);
+        }
+        if(!playersList.containsKey(name))
+        {
+            playersList.put(name, new LinkedHashSet<String>());
+            playersList.put(name, uniqueCards);
+        }
+        else
+        {
+            playersList.get(name).addAll(uniqueCards);
+            playersList.put(name, playersList.get(name));
+        }
+        return playersList;
+    }
+    public static LinkedHashMap<String, Integer> addPlayerAndCalculateTotalPower(LinkedHashMap<String, LinkedHashSet<String>> playersList)
+    {
+        LinkedHashMap<String, Integer>  playersTotalPowerList = new LinkedHashMap<>();
+        int power = 0;
+
+        for(String player : playersList.keySet())
+        {
+            for(String card : playersList.get(player))
+            {
+                char type = card.charAt(card.length() - 1);
+                int typeNumber = findTypeNumber(type);
+                String power_ = card.substring(0, card.length() - 1);
+                if(power_.length() > 1)
+                {
+                    power += Integer.parseInt(power_) * typeNumber;
+                }
+                else
+                {
+                    if(Character.isDigit(power_.charAt(0)))
+                    {
+                        power += Integer.parseInt(power_) * typeNumber;
+                    }
+                    else
+                    {
+                        int powerNumber = findPowerNumber(power_);
+                        power += powerNumber*typeNumber;
+                    }
+                }
+
+            }
+           playersTotalPowerList.put(player, power);
+            power = 0;
+        }
+
+       return playersTotalPowerList;
+    }
+
+    public static Integer findTypeNumber(char type)
+    {
+        //(S -> 4, H-> 3, D -> 2, C -> 1)
+        int typeNumber = 0;
+        if(type == 'S')
+        {
+            typeNumber = 4;
+        }
+        else if(type == 'H')
+        {
+            typeNumber = 3;
+        }
+        else if(type == 'D')
+        {
+            typeNumber = 2;
+        }
+        else if(type == 'C')
+        {
+            typeNumber = 1;
+        }
+        return typeNumber;
+    }
+    public static Integer findPowerNumber(String power_)
+    {
+        int powerNumber = 0;
+        // J 11, Q 12, K 13, A 14
+        if(power_.charAt(0) == 'J')
+        {
+            powerNumber = 11;
+        }
+        else if(power_.charAt(0) == 'Q')
+        {
+            powerNumber = 12;
+        }
+        else if(power_.charAt(0) == 'K')
+        {
+            powerNumber = 13;
+        }
+        else if(power_.charAt(0) == 'A')
+        {
+            powerNumber = 14;
+        }
+        return powerNumber;
+    }
+    public static void printFinalState(LinkedHashMap<String, Integer>  playersTotalPowerList)
+    {
+        for(String key : playersTotalPowerList.keySet())
+        {
+            System.out.println(key + ": " +  playersTotalPowerList.get(key));
+        }
+    }
+}
