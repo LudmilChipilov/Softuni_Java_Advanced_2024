@@ -1,0 +1,38 @@
+import java.util.Scanner;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+public class _04_Count_Symbols
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        TreeMap<Character, Integer> charsList = new TreeMap<>();
+        String input = scanner.nextLine();
+        charsList = addOrUpdateChars(charsList, input);
+        printFinalState(charsList);
+    }
+    public static TreeMap<Character, Integer> addOrUpdateChars(TreeMap<Character, Integer> charsList,  String input)
+    {
+        for(int i = 0; i < input.length(); i++)
+        {
+            char ch = input.charAt(i);
+            if(!charsList.containsKey(ch))
+            {
+                charsList.put(ch, 1);
+            }
+            else
+            {
+                charsList.put(ch, charsList.get(ch) + 1);
+            }
+        }
+        return charsList;
+    }
+    public static void printFinalState(TreeMap<Character, Integer> charsList)
+    {
+        for(Character key : charsList.keySet())
+        {
+            System.out.printf("%c: %d time/s%n", key, charsList.get(key));
+        }
+    }
+}
