@@ -1,0 +1,153 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class _11_The_Party_Reservation_Filter_Module
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String values = scanner.nextLine();
+        List<String> commandStartsWith = new ArrayList<>();
+        List<String> commandEndsWith = new ArrayList<>();
+        List<String> commandLength = new ArrayList<>();
+        List<String> commandContains = new ArrayList<>();
+        List<String> items = Arrays.stream(values.split(" "))
+                .collect(Collectors.toList());
+        String command = scanner.nextLine();
+        while(!command.equals("Print"))
+        {
+            String[] comArgs = command.split(";");
+            String first = comArgs[0];
+            String second = comArgs[1];
+            String symbol = comArgs[2];
+            if(first.equals("Add filter"))
+            {
+                if(second.equals("Starts with"))
+                {
+                    commandStartsWith = addStartsWith(commandStartsWith, items, symbol);
+
+                }
+                else if(second.equals("Ends with"))
+                {
+                    commandEndsWith = addEndsWith(commandEndsWith, items, symbol);
+
+                }
+                else if(second.equals("Length"))
+                {
+                    int currentLength = Integer.parseInt(symbol);
+                    commandLength = addLength(commandLength, items, currentLength);
+
+                }
+                else if(second.equals("Contains"))
+                {
+                    commandContains = addContains(commandContains, items, symbol);
+
+                }
+
+            }
+            else if(first.equals("Remove filter"))
+            {
+                if(second.equals("Starts with"))
+                {
+
+                    commandStartsWith.removeIf(x -> x.startsWith(symbol));
+                }
+                else if(second.equals("Ends with"))
+                {
+                    commandEndsWith.removeIf(x -> x.endsWith(symbol));
+
+                }
+                else if(second.equals("Length"))
+                {
+                    int currentLength = Integer.parseInt(symbol);
+                    commandLength.removeIf(x -> x.length() == currentLength);
+
+                }
+                else if(second.equals("Contains"))
+                {
+                    commandContains.removeIf(x -> x.contains(symbol));
+
+                }
+            }
+            command = scanner.nextLine();
+        }
+        printFinalState(items, commandStartsWith, commandEndsWith, commandLength, commandContains);
+    }
+    public static  List<String> addStartsWith(List<String> commandStartsWith, List<String> items, String symbol)
+    {
+        for(String item : items)
+        {
+            if(item.startsWith(symbol))
+            {
+                commandStartsWith.add(item);
+            }
+        }
+        return commandStartsWith;
+    }
+    public static  List<String> addEndsWith(List<String> commandEndsWith, List<String> items, String symbol)
+    {
+        for(String item : items)
+        {
+            if(item.endsWith(symbol))
+            {
+                commandEndsWith.add(item);
+            }
+        }
+        return commandEndsWith;
+    }
+    public static  List<String> addLength(List<String> commandLength, List<String> items, int currentLength)
+    {
+        for(String item : items)
+        {
+            if(item.length() == currentLength)
+            {
+                commandLength.add(item);
+            }
+        }
+        return commandLength;
+    }
+    public static  List<String> addContains(List<String> commandContains, List<String> items, String symbol)
+    {
+        for(String item : items)
+        {
+            if(item.contains(symbol))
+            {
+                commandContains.add(item);
+            }
+        }
+        return commandContains;
+    }
+    public static void printFinalState(List<String> items, List<String> commandStartsWith,  List<String> commandEndsWith,
+                                       List<String> commandLength, List<String> commandContains)
+    {
+        if(!commandStartsWith.isEmpty())
+        {
+            for(String key : commandStartsWith)
+            {
+                items.remove(key);
+            }
+        }
+        if(!commandEndsWith.isEmpty())
+        {
+            for(String key : commandEndsWith)
+            {
+                items.remove(key);
+            }
+        }
+        if(!commandLength.isEmpty())
+        {
+            for(String key : commandLength)
+            {
+                items.remove(key);
+            }
+        }
+        if(!commandContains.isEmpty())
+        {
+            for(String key : commandContains)
+            {
+                items.remove(key);
+            }
+        }
+        System.out.println(String.join(" ", items));
+    }
+}
