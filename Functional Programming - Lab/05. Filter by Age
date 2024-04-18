@@ -1,0 +1,88 @@
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class _05_Filter_by_Age
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int n = Integer.parseInt(scanner.nextLine());
+        Map<String, Integer> nameAge = new LinkedHashMap<>();
+        for(int i = 0; i < n; i++)
+        {
+            String[] items = scanner.nextLine().split(", ");
+            String name = items[0];
+            int age = Integer.parseInt(items[1]);
+            nameAge.put(name, age);
+        }
+        String condition = scanner.nextLine();
+        int ageToCompare = Integer.parseInt(scanner.nextLine());
+        nameAge = checkCorrectCondition(nameAge, condition, ageToCompare);
+        String[] formatToPrint = scanner.nextLine().split(" ");
+        printFinalStateInCorrectFormat(nameAge, formatToPrint);
+    }
+    public static  Map<String, Integer> checkCorrectCondition(Map<String, Integer> nameAge, String condition, int ageToCompare)
+    {
+        Map<String, Integer> temp = new LinkedHashMap<>();
+        for(String key : nameAge.keySet())
+        {
+            int currentAge = nameAge.get(key);
+            if(condition.equals("younger"))
+            {
+                if(currentAge <= ageToCompare)
+                {
+                    temp.put(key, currentAge);
+                }
+
+            }
+            else if(condition.equals("older"))
+            {
+                if(currentAge >= ageToCompare)
+                {
+                    temp.put(key, currentAge);
+                }
+            }
+        }
+        nameAge = temp;
+        return nameAge;
+    }
+    public static void printFinalStateInCorrectFormat(Map<String, Integer> nameAge, String[] formatToPrint)
+    {
+        if(formatToPrint.length > 1)
+        {
+            if(formatToPrint[0].equals("name") && formatToPrint[1].equals("age"))
+            {
+                for(String key : nameAge.keySet())
+                {
+                    System.out.printf("%s - %d%n", key, nameAge.get(key));
+                }
+            }
+            else
+            {
+                for(String key : nameAge.keySet())
+                {
+                    System.out.printf("%d - %s%n", nameAge.get(key), key);
+                }
+            }
+        }
+        else if(formatToPrint.length == 1)
+        {
+
+            if(formatToPrint[0].equals("name"))
+            {
+                for(String key : nameAge.keySet())
+                {
+                    System.out.println(key);
+                }
+            }
+            else
+            {
+                for(String key : nameAge.keySet())
+                {
+                    System.out.println(nameAge.get(key));
+                }
+            }
+        }
+    }
+}
