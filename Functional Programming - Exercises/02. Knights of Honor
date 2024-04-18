@@ -1,0 +1,17 @@
+import java.util.Scanner;
+import java.util.function.Consumer;
+
+public class _02_Knights_of_Honor
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String[] names = scanner.nextLine().split("\\s+");
+        for(String name : names)
+        {
+            Consumer<String> print =
+                    word -> System.out.println("Sir " + word);
+            print.accept(name);
+        }
+    }
+}
