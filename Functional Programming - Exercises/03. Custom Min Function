@@ -1,0 +1,18 @@
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public class _03_Custom_Min_Function
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<Integer> numbers = Arrays.stream(scanner.nextLine().split(" "))
+                .map(Integer::parseInt).collect(Collectors.toList());
+
+
+        Function<List<Integer>, Integer> getSmallestNumber = Collections::min;
+        int minElement = getSmallestNumber.apply(numbers);
+        System.out.println(minElement);
+    }
+}
