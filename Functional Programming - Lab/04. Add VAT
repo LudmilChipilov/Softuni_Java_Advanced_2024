@@ -1,0 +1,21 @@
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.function.UnaryOperator;
+
+public class _04_Add_VAT
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        double[] prices = Arrays.stream(scanner.nextLine().split(", "))
+            .mapToDouble(Double::parseDouble).toArray();
+        UnaryOperator<Double> addVat = x -> x * 1.2;
+        System.out.println("Prices with VAT:");
+        for(int i = 0; i < prices.length; i++)
+        {
+             prices[i] = addVat.apply(prices[i]);
+            System.out.printf("%.2f%n", prices[i]);
+        }
+
+    }
+}
