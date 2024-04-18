@@ -1,0 +1,34 @@
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
+
+public class _06_Find_Evens_or_Odds
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int[] values = Arrays.stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt).toArray();
+        String condition = scanner.nextLine();
+        int start = values[0];
+        int end = values[1];
+        Predicate<Integer> evenInt =  x -> x % 2 == 0;
+        Predicate<Integer> oddInt = x -> x % 2 != 0;
+        Predicate<String> evenStr = word -> word.equals("even");
+        Predicate<String> oddStr = word -> word.equals("odd");
+        for(int i = start; i <= end; i++)
+        {
+            int current = i;
+            if(evenInt.test(current) && evenStr.test(condition))
+            {
+                System.out.print(current + " ");
+            }
+            else if(oddInt.test(current) && oddStr.test(condition))
+            {
+                System.out.print(current + " ");
+            }
+        }
+
+    }
+}
