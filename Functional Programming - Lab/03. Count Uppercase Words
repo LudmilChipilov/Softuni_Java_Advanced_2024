@@ -1,0 +1,31 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.function.Predicate;
+
+public class _03_Count_Uppercase_Words
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        List<String> upperCaseWords = new ArrayList<>();
+        Predicate<String> checkIsUpperCase =  word -> Character.isUpperCase(word.charAt(0));
+        String[] items = scanner.nextLine().split(" ");
+        for(int i = 0; i < items.length; i++)
+        {
+            if(checkIsUpperCase.test(items[i]))
+            {
+                upperCaseWords.add(items[i]);
+            }
+        }
+        printFinalState(upperCaseWords);
+    }
+    public static void printFinalState( List<String> upperCaseWords)
+    {
+        System.out.println(upperCaseWords.size());
+        for(String word : upperCaseWords)
+        {
+            System.out.println(word);
+        }
+    }
+}
