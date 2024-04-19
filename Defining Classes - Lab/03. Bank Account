@@ -1,0 +1,121 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        Map<Integer, BankAccount> bankAccounts = new HashMap<>();
+        while (true)
+        {
+            String[] line = scanner.nextLine().split(" ");
+            if ("end".equalsIgnoreCase(line[0]))
+            {
+                break;
+            }
+
+            if (line[0].equals("Create"))
+            {
+                createBankAccount(bankAccounts);
+            }
+            else if (line[0].equals("Deposit"))
+            {
+                deposit(Integer.parseInt(line[1]), Double.parseDouble(line[2]), bankAccounts);
+            }
+            else if (line[0].equals("SetInterest"))
+            {
+                setInterest(Double.parseDouble(line[1]));
+            }
+            else if (line[0].equals("GetInterest"))
+            {
+                getInterest(Integer.parseInt(line[1]), Integer.parseInt(line[2]), bankAccounts);
+            }
+        }
+    }
+
+    private static void getInterest(int id, int years, Map<Integer, BankAccount> bankAccounts)
+    {
+        if (bankAccounts.containsKey(id))
+        {
+            System.out.printf("%.2f%n", bankAccounts.get(id).getInterestRate(years));
+        }
+        else
+        {
+            System.out.println("Account does not exist");
+        }
+    }
+
+    private static void deposit(int id, double amount, Map<Integer, BankAccount> bankAccounts)
+    {
+        if (bankAccounts.containsKey(id))
+        {
+            bankAccounts.get(id).deposit(amount);
+            System.out.printf("Deposited %.0f to ID%d%n", amount, id);
+        }
+        else
+        {
+            System.out.println("Account does not exist");
+        }
+    }
+
+    private static void createBankAccount(Map<Integer, BankAccount> bankAccounts)
+    {
+        BankAccount bankAccount = new BankAccount();
+        bankAccounts.put(bankAccount.getId(), bankAccount);
+        System.out.println("Account ID" + bankAccount.getId() + " created");
+    }
+
+    private static void setInterest(double interest)
+    {
+        BankAccount.setInterestRate(interest);
+    }
+
+}
+
+_____________________________________________________________________________________________________________________________
+
+
+public class BankAccount
+{
+    private static double interestRate = 0.02;
+    private static int counter = 1;
+
+    private int id;
+    private double balance;
+
+    BankAccount()
+    {
+        this.id = counter++;
+    }
+
+    int getId()
+    {
+        return this.id;
+    }
+
+    static void setInterestRate(double interestRate)
+    {
+        BankAccount.interestRate = interestRate;
+    }
+
+    double getInterestRate(int years)
+    {
+        return BankAccount.interestRate * years * this.balance;
+    }
+
+    void deposit(double amount)
+    {
+        this.balance += amount;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("Account ID%d, balance %.2f", this.id, this.balance);
+    }
+}
