@@ -1,0 +1,366 @@
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+          Scanner scanner = new Scanner(System.in);
+          Map<String, Person> persons = new LinkedHashMap<>();
+          String command = scanner.nextLine();
+          while(!command.equals("End"))
+          {
+              String[] items = command.split("\\s+");
+              String personName = items[0];
+              Person person = null;
+              if(!persons.containsKey(personName))
+              {
+                  persons.put(personName, new Person());
+              }
+              String itemsCommand = items[1];
+              if(itemsCommand.equals("company"))
+              {
+                  String companyName = items[2];
+                  String department = items[3];
+                  double salary = Double.parseDouble(items[4]);
+                  Company company = new Company(companyName, department, salary);
+                  persons.get(personName).setCompany(company);
+              }
+              else if(itemsCommand.equals("pokemon"))
+              {
+                  String pokemonName = items[2];
+                  String pokemonType = items[3];
+                  Pokemon pokemon = new Pokemon(pokemonName, pokemonType);
+                  persons.get(personName).getPokemons().add(pokemon);
+              }
+              else if(itemsCommand.equals("parents"))
+              {
+                  String parentName = items[2];
+                  String parentBirthday = items[3];
+                  Parent parent = new Parent(parentName, parentBirthday);
+                  persons.get(personName).getParents().add(parent);
+              }
+              else if(itemsCommand.equals("children"))
+              {
+                  String childName = items[2];
+                  String childBirthday = items[3];
+                  Child child = new Child(childName, childBirthday);
+                  persons.get(personName).getChildren().add(child);
+              }
+              else if(itemsCommand.equals("car"))
+              {
+                  String carModel = items[2];
+                  int carSpeed = Integer.parseInt(items[3]);
+                  Car car = new Car(carModel, carSpeed);
+                  persons.get(personName).setCar(car);
+              }
+              command = scanner.nextLine();
+          }
+          String personToPrint = scanner.nextLine();
+          System.out.println(personToPrint);
+
+          Person person = persons.get(personToPrint);
+          System.out.println(person);
+    }
+}
+
+
+________________________________________________________________________________________________________
+
+
+public class Car
+{
+    private String carModel;
+    private int carSpeed;
+
+    public Car(String carModel, int carSpeed) {
+        this.carModel = carModel;
+        this.carSpeed = carSpeed;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public int getCarSpeed() {
+        return carSpeed;
+    }
+
+    public void setCarSpeed(int carSpeed) {
+        this.carSpeed = carSpeed;
+    }
+    @Override
+    public String toString()
+    {
+        return String.format("%s %d", carModel, carSpeed);
+    }
+}
+
+
+__________________________________________________________________________________________________
+
+
+public class Child
+{
+     private String childName;
+     private String childBirthday;
+
+    public Child(String childName, String childBirthday) {
+        this.childName = childName;
+        this.childBirthday = childBirthday;
+    }
+
+    public String getChildName() {
+        return childName;
+    }
+
+    public void setChildName(String childName) {
+        this.childName = childName;
+    }
+
+    public String getChildBirthday() {
+        return childBirthday;
+    }
+
+    public void setChildBirthday(String childBirthday) {
+        this.childBirthday = childBirthday;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("%s %s", childName, childBirthday);
+    }
+}
+
+
+____________________________________________________________________________________________________
+
+
+public class Company
+{
+     private String companyName;
+     private String department;
+     private double salary;
+
+    public Company(String companyName, String department, double salary) {
+        this.companyName = companyName;
+        this.department = department;
+        this.salary = salary;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("%s %s %.2f", companyName, department, salary);
+    }
+}
+
+
+________________________________________________________________________________________________________
+
+
+
+public class Parent
+{
+     private String parentName;
+     private String parentBirthday;
+
+    public Parent(String parentName, String parentBirthday) {
+        this.parentName = parentName;
+        this.parentBirthday = parentBirthday;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
+    public String getParentBirthday() {
+        return parentBirthday;
+    }
+
+    public void setParentBirthday(String parentBirthday) {
+        this.parentBirthday = parentBirthday;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("%s %s", parentName, parentBirthday);
+    }
+}
+
+
+____________________________________________________________________________________________________
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Person
+{
+    private Company company;
+    private Car car;
+    private List<Parent> parents;
+    private List<Child> children;
+    private List<Pokemon> pokemons;
+
+
+    public Person()
+    {
+        parents = new ArrayList<>();
+        children = new ArrayList<>();
+        pokemons = new ArrayList<>();
+    }
+
+    public Person(Company company, Car car, List<Parent> parents, List<Child> children, List<Pokemon> pokemons) {
+        this.company = company;
+        this.car = car;
+        this.parents = parents;
+        this.children = children;
+        this.pokemons = pokemons;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public List<Parent> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<Parent> parents) {
+        this.parents = parents;
+    }
+
+    public List<Child> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Child> children) {
+        this.children = children;
+    }
+
+    public List<Pokemon> getPokemons() {
+        return pokemons;
+    }
+
+    public void setPokemons(List<Pokemon> pokemons) {
+        this.pokemons = pokemons;
+    }
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Company:%n"));
+        if(company != null)
+        {
+            sb.append(String.format("%s%n", company));
+        }
+        sb.append(String.format("Car:%n"));
+        if(car != null)
+        {
+            sb.append(String.format("%s%n", car));
+        }
+        sb.append(String.format("Pokemon:%n"));
+        for (Pokemon pokemon : pokemons) {
+            sb.append(String.format("%s%n", pokemon));
+        }
+
+        sb.append(String.format("Parents:%n"));
+        for (Parent parent : parents) {
+            sb.append(String.format("%s%n", parent));
+        }
+
+        sb.append(String.format("Children:%n"));
+        for (Child child : children) {
+            sb.append(String.format("%s%n", child));
+        }
+
+        return sb.toString();
+    }
+}
+
+
+
+_____________________________________________________________________________________________________________
+
+
+public class Pokemon
+{
+    private String pokemonName;
+    private String pokemonType;
+
+    public Pokemon(String pokemonName, String pokemonType) {
+        this.pokemonName = pokemonName;
+        this.pokemonType = pokemonType;
+    }
+
+    public String getPokemonName() {
+        return pokemonName;
+    }
+
+    public void setPokemonName(String pokemonName) {
+        this.pokemonName = pokemonName;
+    }
+
+    public String getPokemonType() {
+        return pokemonType;
+    }
+
+    public void setPokemonType(String pokemonType) {
+        this.pokemonType = pokemonType;
+    }
+    @Override
+    public String toString()
+    {
+        return String.format("%s %s", pokemonName, pokemonType);
+    }
+}
+
