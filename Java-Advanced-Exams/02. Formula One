@@ -36,36 +36,36 @@ public class _02_Formula_One
             if(command.equals("up"))
             {
                 rowP--;
-                rowP = checkIfRowIsOutOrRange(rowP, command, size);
+                rowP = checkIfRowIsOutOfRange(rowP, command, size);
 
                 rowBonus = rowP - 1;
-                rowBonus = checkIfRowIsOutOrRange(rowBonus, command, size);
+                rowBonus = checkIfRowIsOutOfRange(rowBonus, command, size);
 
             }
             if(command.equals("down"))
             {
                 rowP++;
-                rowP = checkIfRowIsOutOrRange(rowP, command, size);
+                rowP = checkIfRowIsOutOfRange(rowP, command, size);
 
                 rowBonus = rowP + 1;
-                rowBonus = checkIfRowIsOutOrRange(rowBonus, command, size);
+                rowBonus = checkIfRowIsOutOfRange(rowBonus, command, size);
 
             }
             if(command.equals("left"))
             {
                 colP--;
-                colP = checkIfColIsOutOrRange(colP, command, size);
+                colP = checkIfColIsOutOfRange(colP, command, size);
 
                 colBonus = colP - 1;
-                colBonus = checkIfColIsOutOrRange(colBonus, command, size);
+                colBonus = checkIfColIsOutOfRange(colBonus, command, size);
 
             }
             if(command.equals("right"))
             {
                 colP++;
-                colP = checkIfColIsOutOrRange(colP, command, size);
+                colP = checkIfColIsOutOfRange(colP, command, size);
                 colBonus = colP + 1;
-                colBonus = checkIfColIsOutOrRange(colBonus, command, size);
+                colBonus = checkIfColIsOutOfRange(colBonus, command, size);
 
             }
             if(matrix[rowP][colP].equals("T"))
@@ -100,7 +100,7 @@ public class _02_Formula_One
         matrix[rowP][colP] = "P";
         printFinalState(matrix, size);
     }
-    public static Integer checkIfRowIsOutOrRange(int row, String command, int size)
+    public static Integer checkIfRowIsOutOfRange(int row, String command, int size)
     {
         if(command.equals("up"))
         {
@@ -118,7 +118,7 @@ public class _02_Formula_One
         }
         return row;
     }
-    public static Integer checkIfColIsOutOrRange(int col, String command, int size)
+    public static Integer checkIfColIsOutOfRange(int col, String command, int size)
     {
         if(command.equals("left"))
         {
