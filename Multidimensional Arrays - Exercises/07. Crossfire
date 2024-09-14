@@ -1,0 +1,79 @@
+import java.util.*;
+
+public class _07_Crossfire_List
+{
+    public static void main(String[] args)
+    {
+        Scanner scanner = new Scanner(System.in);
+        int[] sizes = Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+
+        int rows = sizes[0];
+        int cols = sizes[1];
+        int[][] matrix = new int[rows][cols];
+        int counter = 1;
+        List<List<Integer>> matrixList = new ArrayList<List<Integer>>();
+        for(int row = 0; row < rows; row++)
+        {
+            List<Integer> currentMatrixListRow = new ArrayList<>();
+            for(int col = 0; col < cols; col++)
+            {
+                matrix[row][col] = counter;
+                currentMatrixListRow.add(matrix[row][col]);
+
+                counter++;
+            }
+            matrixList.add(currentMatrixListRow);
+        }
+        String command = scanner.nextLine();
+        while(!command.equals("Nuke it from orbit"))
+        {
+            String[] items = command.split("\\s+");
+            matrixList = crossfireJaggedMatrixList(matrixList, items);
+            command = scanner.nextLine();
+        }
+        printMatrixList(matrixList);
+
+    }
+    public static List<List<Integer>> crossfireJaggedMatrixList(List<List<Integer>> matrixList, String[] items)
+    {
+        int rowItems = Integer.parseInt(items[0]);
+        int colItems = Integer.parseInt(items[1]);
+        int radius = Integer.parseInt(items[2]);
+        List<List<Integer>> newMatrix = new ArrayList<List<Integer>>();
+        for(int row = 0; row < matrixList.size(); row++)
+        {
+            List<Integer> newMatrixRow = new ArrayList<>();
+            for(int col = 0; col < matrixList.get(row).size(); col++)
+            {
+
+               if(row == rowItems && col >= colItems - radius && col <= colItems + radius)
+               {
+                   continue;
+               }
+               else if(row != rowItems && col == colItems && row >= rowItems - radius && row <= rowItems + radius)
+               {
+                   continue;
+               }
+               
+                newMatrixRow.add(matrixList.get(row).get(col));
+            }
+            if(!newMatrixRow.isEmpty())
+            {
+                newMatrix.add(newMatrixRow);
+            }
+           
+        }
+        return newMatrix;
+    }
+    public static void printMatrixList(List<List<Integer>> matrixList)
+    {
+        for(int row = 0; row < matrixList.size(); row++)
+        {
+           for(Integer num : matrixList.get(row))
+           {
+               System.out.print(num + " ");
+           }
+           System.out.println();
+        }
+    }
+}
